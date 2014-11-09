@@ -1,0 +1,29 @@
+body {
+    background: none repeat scroll 0 0 #F1F1F1;
+}
+
+.content {
+    width: 940px;
+    background: none repeat scroll 0 0 #FFFFFF;
+    margin-top: 20px;
+    padding: 0 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+img {
+    max-width: 940px;
+}
+
+.news-entry-title a:link {
+    color: #000000;
+    text-decoration: none;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1.3em;
+}
+
+.news-entry {
+    margin: 0 0 48px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}

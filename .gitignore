@@ -1,0 +1,6 @@
+# PhpStorm (Idea) Config
+/.idea/**
+
+# Development Sandbox
+sandbox.php
+
