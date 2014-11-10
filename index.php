@@ -1,4 +1,4 @@
-<?php require 'php/service/remotehtml/ErrorReportingRemoteHTMLContentBuilder.php' ?>
+<?php require_once 'php/service/remotehtml/ErrorReportingRemoteHTMLContentBuilder.php' ?>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />

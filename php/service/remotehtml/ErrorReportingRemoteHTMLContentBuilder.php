@@ -1,7 +1,11 @@
 <?php
-require 'php/view/remotehtml/HTMLResponseBuilder.php';
-require 'php/model/remotehtml/RemoteHTMLContent.php';
-require 'php/service/remotehtml/RemoteHTMLContentFetcher.php';
+
+require_once 'php/model/news/NewsEntry.php';
+require_once 'php/model/news/NewsEntryComparator.php';
+require_once 'php/model/remotehtml/RemoteHTMLContent.php';
+require_once 'php/model/remotehtml/dateparsing/DateFieldInformationFactory.php';
+require_once 'php/service/remotehtml/RemoteHTMLContentFetcher.php';
+require_once 'php/view/remotehtml/HTMLResponseBuilder.php';
 
 class ErrorReportingRemoteHTMLContentBuilder {
 
@@ -16,7 +20,8 @@ class ErrorReportingRemoteHTMLContentBuilder {
 
             $result = mysqli_query($connection, "SELECT * FROM htmlcontent WHERE enabled = 1");
             while($row = mysqli_fetch_array($result)) {
-                $remoteHTMLContent = new RemoteHTMLContent($row['url'], $row['name'], $row['outerContentSelector'], $row['innerContentSelector'], $row['titleSelector']);
+                $dateFieldInformation = DateFieldInformationFactory::create($row);
+                $remoteHTMLContent = new RemoteHTMLContent($row['url'], $row['name'], $row['outerContentSelector'], $row['innerContentSelector'], $row['titleSelector'], $dateFieldInformation);
 
                 $fetchedStories = RemoteHTMLContentFetcher::fetch($remoteHTMLContent);
                 $allStories = array_merge($allStories, $fetchedStories);
@@ -24,7 +29,7 @@ class ErrorReportingRemoteHTMLContentBuilder {
 
             mysqli_close($connection);
 
-            // TODO: sort array
+            uasort($allStories, "NewsEntryComparator::compare");
 
             return self::toHtml($allStories);
         }

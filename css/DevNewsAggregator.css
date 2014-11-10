@@ -23,7 +23,11 @@ img {
     line-height: 1.3em;
 }
 
+.news-entry-date {
+    float: right;
+}
+
 .news-entry {
     margin: 0 0 48px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    /*border: 1px solid rgba(0, 0, 0, 0.2);*/
 }
