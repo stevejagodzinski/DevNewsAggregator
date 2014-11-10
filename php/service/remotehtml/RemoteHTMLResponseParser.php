@@ -5,6 +5,7 @@ require_once 'php/model/news/NewsEntry.php';
 require_once 'php/model/remotehtml/dateparsing/IDateFieldInformation.php';
 require_once 'php/model/remotehtml/RemoteHTMLContent.php';
 require_once 'php/service/remotehtml/dateparsing/SeparateDateTimeFieldsParsingStrategy.php';
+require_once 'php/service/remotehtml/jquery/JQueryToPhpQuery.php';
 
 class RemoteHTMLResponseParser {
     private $dateParsingStrategies;
@@ -39,13 +40,19 @@ class RemoteHTMLResponseParser {
         for ($i=0; $i<$numberOfPosts; $i++) {
             $newsEntry = new NewsEntry();
             $post = $posts->eq($i);
-            $newsEntry->setTitle($post->find($remoteHTMLContent->getTitleSelector())->html());
-            $newsEntry->setContent($post->find($remoteHTMLContent->getInnerContentSelector())->html());
+            $newsEntry->setTitle($this->evaluateJQuery($post, $remoteHTMLContent->getTitleSelector()));
+            $newsEntry->setContent($this->evaluateJQuery($post, $remoteHTMLContent->getInnerContentSelector()));
             $newsEntry->setDate($this->parseDate($post, $remoteHTMLContent->getDateFieldInformation()));
             $newsStories[] = $newsEntry;
         }
 
         return $newsStories;
+    }
+
+    private function evaluateJQuery($target, $jquery) {
+        $assignment = '$value = $target' . JQueryToPhpQuery::toPhpQuery($jquery) . ";";
+        eval($assignment);
+        return $value;
     }
 
     private function parseDate($post, IDateFieldInformation $dateFieldInformation) {
