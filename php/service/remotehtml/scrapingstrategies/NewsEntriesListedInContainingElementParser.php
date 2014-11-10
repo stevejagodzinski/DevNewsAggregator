@@ -9,7 +9,7 @@ require_once 'php/service/remotehtml/dateparsing/SeparateDateTimeFieldsParsingSt
 require_once 'php/service/remotehtml/jquery/JQueryToPhpQuery.php';
 require_once 'php/service/remotehtml/scrapingstrategies/IHTMLScrapingStrategy.php';
 
-class NewsEntriesListedInContainingElementParser {
+class NewsEntriesListedInContainingElementParser implements IHTMLScrapingStrategy  {
     private $dateParsingStrategies;
 
     public static function getInstance() {
