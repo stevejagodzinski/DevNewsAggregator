@@ -29,15 +29,20 @@ class SeparateDateTimeFieldsParsingStrategy implements IDateParsingStrategy {
         return $dateFieldInformation->getStrategy() == DateParsingStrategy::SEPARATE_DATE_TIME_FIELDS;
     }
 
-    public function parse($post, IDateFieldInformation $dateFieldInformation) {
-        return $this->doParse($post, $dateFieldInformation);
+    public function parse($post, IDateFieldInformation $dateFieldInformation, $n) {
+        return $this->doParse($post, $dateFieldInformation, $n);
     }
 
-    private function doParse($post, SeparateDateTimeFields $dateFieldInformation) {
+    private function doParse($post, SeparateDateTimeFields $dateFieldInformation, $n) {
         $dateFunction = '$date = $post' . JQueryToPhpQuery::toPhpQuery($dateFieldInformation->getDateSelector()) . ";";
-        $timeFunction = '$time = $post' . JQueryToPhpQuery::toPhpQuery($dateFieldInformation->getTimeSelector()) . ";";
         eval($dateFunction);
-        eval($timeFunction);
-        return strtotime($date . ' ' . $time);
+
+        if ($dateFieldInformation->getTimeSelector() != null) {
+            $timeFunction = '$time = $post' . JQueryToPhpQuery::toPhpQuery($dateFieldInformation->getTimeSelector()) . ";";
+            eval($timeFunction);
+            return strtotime($date . ' ' . $time);
+        } else {
+            return strtotime($date);
+        }
     }
 }

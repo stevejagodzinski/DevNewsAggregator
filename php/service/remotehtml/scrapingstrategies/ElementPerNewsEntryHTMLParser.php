@@ -4,10 +4,12 @@ require_once('lib/phpQuery/phpQuery.php');
 require_once 'php/model/news/NewsEntry.php';
 require_once 'php/model/remotehtml/dateparsing/IDateFieldInformation.php';
 require_once 'php/model/remotehtml/RemoteHTMLContent.php';
+require_once 'php/model/remotehtml/scrapingstrategy/HTMLScrapingStrategy.php';
 require_once 'php/service/remotehtml/dateparsing/SeparateDateTimeFieldsParsingStrategy.php';
 require_once 'php/service/remotehtml/jquery/JQueryToPhpQuery.php';
+require_once 'php/service/remotehtml/scrapingstrategies/IHTMLScrapingStrategy.php';
 
-class RemoteHTMLResponseParser {
+class ElementPerNewsEntryHTMLParser implements IHTMLScrapingStrategy {
     private $dateParsingStrategies;
 
     public static function getInstance() {
@@ -37,7 +39,7 @@ class RemoteHTMLResponseParser {
 
         $posts = pq($remoteHTMLContent->getOuterContentSelector(), $doc);
         $numberOfPosts = count($posts->elements);
-        for ($i=0; $i<$numberOfPosts; $i++) {
+        for ($i=$remoteHTMLContent->getIgnoreFirstNPosts(); $i<$numberOfPosts - $remoteHTMLContent->getIgnoreLastNPosts(); $i++) {
             $newsEntry = new NewsEntry();
             $post = $posts->eq($i);
             $newsEntry->setTitle($this->evaluateJQuery($post, $remoteHTMLContent->getTitleSelector()));
@@ -58,8 +60,12 @@ class RemoteHTMLResponseParser {
     private function parseDate($post, IDateFieldInformation $dateFieldInformation) {
         foreach($this->dateParsingStrategies as $dateParsingStrategy) {
             if ($dateParsingStrategy->applies($dateFieldInformation)) {
-                return $dateParsingStrategy->parse($post, $dateFieldInformation);
+                return $dateParsingStrategy->parse($post, $dateFieldInformation, null);
             }
         }
     }
-} 
+
+    public function applies(RemoteHTMLContent $remoteHTMLContent) {
+        return HTMLScrapingStrategy::ELEMENT_PER_NEWS_ENTRY == $remoteHTMLContent->getScrapingStrategy();
+    }
+}

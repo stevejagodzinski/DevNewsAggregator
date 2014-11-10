@@ -15,6 +15,14 @@ img {
     max-width: 940px;
 }
 
+.news-entry-title {
+    color: #000000;
+    text-decoration: none;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1.3em;
+}
+
 .news-entry-title a:link {
     color: #000000;
     text-decoration: none;

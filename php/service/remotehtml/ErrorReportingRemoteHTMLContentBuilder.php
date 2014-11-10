@@ -21,9 +21,10 @@ class ErrorReportingRemoteHTMLContentBuilder {
             $result = mysqli_query($connection, "SELECT * FROM htmlcontent WHERE enabled = 1");
             while($row = mysqli_fetch_array($result)) {
                 $dateFieldInformation = DateFieldInformationFactory::create($row);
-                $remoteHTMLContent = new RemoteHTMLContent($row['url'], $row['name'], $row['outerContentSelector'], $row['innerContentSelector'], $row['titleSelector'], $dateFieldInformation);
+                $remoteHTMLContent = new RemoteHTMLContent($row['url'], $row['name'], $row['scraping_strategy'], $row['outerContentSelector'], $row['innerContentSelector'], $row['titleSelector'],
+                    $dateFieldInformation, $row['ignore_first_n_posts'], $row['ignore_last_n_post']);
 
-                $fetchedStories = RemoteHTMLContentFetcher::fetch($remoteHTMLContent);
+                $fetchedStories = RemoteHTMLContentFetcher::getInstance()->fetch($remoteHTMLContent);
                 $allStories = array_merge($allStories, $fetchedStories);
             }
 

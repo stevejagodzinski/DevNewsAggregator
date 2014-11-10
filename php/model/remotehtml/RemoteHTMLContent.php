@@ -3,18 +3,24 @@
 class RemoteHTMLContent {
     private $url;
     private $name;
+    private $scrapingStrategy;
     private $outerContentSelector;
     private $titleSelector;
     private $innerContentSelector;
     private $dateFieldInformation;
+    private $ignoreFirstNPosts;
+    private $ignoreLastNPosts;
 
-    function __construct($url, $name, $outerContentSelector, $innerContentSelector, $titleSelector, IDateFieldInformation $dateFieldInformation) {
+    function __construct($url, $name, $scrapingStrategy, $outerContentSelector, $innerContentSelector, $titleSelector, IDateFieldInformation $dateFieldInformation, $ignoreFirstNPosts, $ignoreLastNPosts) {
         $this->innerContentSelector = $innerContentSelector;
         $this->name = $name;
+        $this->scrapingStrategy = $scrapingStrategy;
         $this->outerContentSelector = $outerContentSelector;
         $this->titleSelector = $titleSelector;
         $this->url = $url;
         $this->dateFieldInformation = $dateFieldInformation;
+        $this->ignoreFirstNPosts = $ignoreFirstNPosts;
+        $this->ignoreLastNPosts = $ignoreLastNPosts;
     }
 
     function getURL() {
@@ -39,6 +45,18 @@ class RemoteHTMLContent {
 
     public function getDateFieldInformation() {
         return $this->dateFieldInformation;
+    }
+
+    public function getIgnoreFirstNPosts() {
+        return $this->ignoreFirstNPosts;
+    }
+
+    public function getIgnoreLastNPosts() {
+        return $this->ignoreLastNPosts;
+    }
+
+    public function getScrapingStrategy() {
+        return $this->scrapingStrategy;
     }
 }
 ?>
