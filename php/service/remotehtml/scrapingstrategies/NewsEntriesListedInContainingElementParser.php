@@ -50,6 +50,7 @@ class NewsEntriesListedInContainingElementParser implements IHTMLScrapingStrateg
                 $newsEntry->setTitle($title);
                 $newsEntry->setContent($content);
                 $newsEntry->setDate($this->parseDate($posts, $remoteHTMLContent->getDateFieldInformation(), $n));
+                $newsEntry->setSource($remoteHTMLContent->getName());
                 $newsStories[] = $newsEntry;
 
                 $n++;

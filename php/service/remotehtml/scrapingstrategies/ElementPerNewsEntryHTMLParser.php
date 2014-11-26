@@ -45,6 +45,7 @@ class ElementPerNewsEntryHTMLParser implements IHTMLScrapingStrategy {
             $newsEntry->setTitle($this->evaluateJQuery($post, $remoteHTMLContent->getTitleSelector()));
             $newsEntry->setContent($this->evaluateJQuery($post, $remoteHTMLContent->getInnerContentSelector()));
             $newsEntry->setDate($this->parseDate($post, $remoteHTMLContent->getDateFieldInformation()));
+            $newsEntry->setSource($remoteHTMLContent->getName());
             $newsStories[] = $newsEntry;
         }
 

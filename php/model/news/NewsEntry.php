@@ -4,6 +4,15 @@ class NewsEntry {
     private $title;
     private $date;
     private $content;
+    private $source;
+
+    public function getSource() {
+        return $this->source;
+    }
+
+    public function setSource($source) {
+        $this->source = $source;
+    }
 
     public function getContent() {
         return $this->content;

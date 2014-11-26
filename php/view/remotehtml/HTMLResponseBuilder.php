@@ -3,7 +3,7 @@
 class HTMLResponseBuilder {
     public static function toHtml(NewsEntry $newsEntry) {
         $html =
-            "<div class=\"news-entry\">".
+            "<div class=\"news-entry\" data-content-source=\"". $newsEntry->getSource() ."\">".
                 "<div class=\"news-entry-header\">".
                     "<span class=\"news-entry-title\">".$newsEntry->getTitle()."</span>".
                     "<span class=\"news-entry-date\">".date("F jS, Y h:i A", $newsEntry->getDate())."</span>".
