@@ -19,6 +19,10 @@ class RemoteHtmlContentDataAccess {
         return self::getForQueryString($query, array($userId));
     }
 
+    public static function getByName($name) {
+        return self::getForQueryString("SELECT * FROM \"DevNewsAggregatorConfiguration_htmlcontent\" WHERE name = $name");
+    }
+
     private static function getForQueryString($query, $params=array()) {
         $connection = pg_connect("host=localhost port=5432 dbname=DevNewsAggregator user=DevNews password=DevNews") or die("Could not connect to Postgres");
         $result = pg_query_params($connection, $query, $params) or die("Could not execute query");

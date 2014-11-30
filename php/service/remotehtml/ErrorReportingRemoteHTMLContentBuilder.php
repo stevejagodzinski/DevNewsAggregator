@@ -15,7 +15,9 @@ class ErrorReportingRemoteHTMLContentBuilder {
     }
 
     private static function getRemoteHtmlContentToScrape() {
-        if (isset($_GET['userid'])) {
+        if (isset($_GET['name'])) {
+            return RemoteHtmlContentDataAccess::getByName($_GET['name']);
+        }elseif (isset($_GET['userid'])) {
             return RemoteHtmlContentDataAccess::getForUser($_GET['userid']);
         } else {
             return RemoteHtmlContentDataAccess::getAll();
