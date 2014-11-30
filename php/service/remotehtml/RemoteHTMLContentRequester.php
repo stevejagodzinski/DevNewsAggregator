@@ -11,19 +11,18 @@ class RemoteHTMLContentRequester {
         $this->urlArray = $urlArray;
     }
 
-    // TODO: Broken. Test on laptop. Bad CURL config issue or incorrect code?
-//    public function fetchAsynchronously() {
-//        $this->curlMultiHandle = curl_multi_init();
-//
-//        $this->initCurlHandles();
-//        $this->initCurlMultiHandles();
-//        $this->validateCurlHandles();
-//        $this->executeRequests();
-//        $this->buildResults();
-//        $this->closeCurlHandles();
-//        $this->validateResults();
-//        return $this->results;
-//    }
+    public function fetchAsynchronously() {
+        $this->curlMultiHandle = curl_multi_init();
+
+        $this->initCurlHandles();
+        $this->initCurlMultiHandles();
+        $this->validateCurlHandles();
+        $this->executeRequests();
+        $this->buildResults();
+        $this->closeCurlHandles();
+        $this->validateResults();
+        return $this->results;
+    }
 
     private function initCurlHandles() {
         foreach($this->urlArray as $i => $url) {
@@ -46,13 +45,13 @@ class RemoteHTMLContentRequester {
         } while ($resultCode == CURLM_CALL_MULTI_PERFORM);
 
         while ($isStillRunning && $resultCode == CURLM_OK) {
-            if (curl_multi_select($this->curlMultiHandle) != -1) {
-                do {
-                    $resultCode = curl_multi_exec($this->curlMultiHandle, $isStillRunning);
-                } while ($resultCode == CURLM_CALL_MULTI_PERFORM);
-            } else {
-                usleep(500000);
+            // Block until response or sleep for 500ms if error detecting response signal
+            if (curl_multi_select($this->curlMultiHandle) == -1) {
+                usleep(100000);
             }
+            do {
+                $resultCode = curl_multi_exec($this->curlMultiHandle, $isStillRunning);
+            } while ($resultCode == CURLM_CALL_MULTI_PERFORM);
         }
     }
 

@@ -55,7 +55,7 @@ class RemoteHTMLContentFetcher {
     private static function fetchRemoteContent($remoteHTMLContentArray) {
         // Requests are run in parallel. This function call is not itself asynchronous
         $fetcher = new RemoteHTMLContentRequester(self::toUrlArray($remoteHTMLContentArray));
-        return $fetcher->fetchSynchronously();
+        return $fetcher->fetchAsynchronously();
     }
 
     private static function toUrlArray($remoteHTMLContentArray) {
