@@ -5,8 +5,23 @@ require_once 'php/model/remotehtml/dateparsing/DateFieldInformationFactory.php';
 
 class RemoteHtmlContentDataAccess {
     public static function getAll() {
+        return self::getForQueryString('SELECT * FROM "DevNewsAggregatorConfiguration_htmlcontent" WHERE enabled = true');
+    }
+
+    public static function getForUser($userId) {
+        $query = ' SELECT html_content.* ' .
+                    ' FROM "DevNewsAggregatorConfiguration_htmlcontent" html_content ' .
+                    ' INNER JOIN "DevNewsAggregatorConfiguration_htmlcontent_users" htmlcontent_users ' .
+                    ' ON html_content = htmlcontent_users ' .
+                    ' WHERE html_content.enabled = true ' .
+                    " AND htmlcontent_users.user_id = $1 ";
+
+        return self::getForQueryString($query, array($userId));
+    }
+
+    private static function getForQueryString($query, $params=array()) {
         $connection = pg_connect("host=localhost port=5432 dbname=DevNewsAggregator user=DevNews password=DevNews") or die("Could not connect to Postgres");
-        $result = pg_query($connection, 'SELECT * FROM "DevNewsAggregatorConfiguration_htmlcontent" WHERE enabled = true') or die("Could not execute query");
+        $result = pg_query_params($connection, $query, $params) or die("Could not execute query");
 
         $remoteHTMLContent = array();
 

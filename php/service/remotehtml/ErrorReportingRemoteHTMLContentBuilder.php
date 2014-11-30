@@ -9,9 +9,17 @@ require_once 'php/view/remotehtml/HTMLResponseBuilder.php';
 
 class ErrorReportingRemoteHTMLContentBuilder {
     public static function getRemoteHTMLContent() {
-        $allStories = RemoteHTMLContentFetcher::getInstance()->scrape(RemoteHtmlContentDataAccess::getAll());
+        $allStories = RemoteHTMLContentFetcher::getInstance()->scrape(self::getRemoteHtmlContentToScrape());
         uasort($allStories, "NewsEntryComparator::compare");
         return self::toHtml($allStories);
+    }
+
+    private static function getRemoteHtmlContentToScrape() {
+        if (isset($_GET['userid'])) {
+            return RemoteHtmlContentDataAccess::getForUser($_GET['userid']);
+        } else {
+            return RemoteHtmlContentDataAccess::getAll();
+        }
     }
 
     private static function toHtml($newsStories) {
