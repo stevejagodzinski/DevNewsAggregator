@@ -12,7 +12,7 @@ class RemoteHtmlContentDataAccess {
         $query = ' SELECT html_content.* ' .
                     ' FROM "DevNewsAggregatorConfiguration_htmlcontent" html_content ' .
                     ' INNER JOIN "DevNewsAggregatorConfiguration_htmlcontent_users" htmlcontent_users ' .
-                    ' ON html_content = htmlcontent_users ' .
+                    ' ON html_content.id = htmlcontent_users.htmlcontent_id ' .
                     ' WHERE html_content.enabled = true ' .
                     " AND htmlcontent_users.user_id = $1 ";
 
