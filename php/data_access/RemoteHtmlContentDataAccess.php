@@ -20,7 +20,7 @@ class RemoteHtmlContentDataAccess {
     }
 
     public static function getByName($name) {
-        return self::getForQueryString("SELECT * FROM \"DevNewsAggregatorConfiguration_htmlcontent\" WHERE name = $name");
+        return self::getForQueryString("SELECT * FROM \"DevNewsAggregatorConfiguration_htmlcontent\" WHERE name = $1", array($name));
     }
 
     private static function getForQueryString($query, $params=array()) {
