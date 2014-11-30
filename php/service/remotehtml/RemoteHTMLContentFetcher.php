@@ -28,9 +28,20 @@ class RemoteHTMLContentFetcher {
     private function __wakeup() {
     }
 
-    public function fetch(RemoteHTMLContent $remoteHTMLContent) {
-        $response = RemoteHTMLContentRequester::fetch($remoteHTMLContent->getURL());
-        return $this->scrapeResponse($response, $remoteHTMLContent);
+    public function scrape($remoteHTMLContentArray) {
+        $responses = self::fetchRemoteContent($remoteHTMLContentArray);
+        return $this->scrapeResponses($remoteHTMLContentArray, $responses);
+    }
+
+    private function scrapeResponses($remoteHTMLContentArray, $responses) {
+        $allStories = array();
+
+        for($i = 0; $i<count($responses); $i++) {
+            $fetchedStories = $this->scrapeResponse($responses[$i], $remoteHTMLContentArray[$i]);
+            $allStories = array_merge($allStories, $fetchedStories);
+        }
+
+        return $allStories;
     }
 
     private function scrapeResponse($response, RemoteHTMLContent $remoteHTMLContent) {
@@ -39,6 +50,20 @@ class RemoteHTMLContentFetcher {
                 return $scrapingStrategy->parse($remoteHTMLContent, $response);
             }
         }
+    }
+
+    private static function fetchRemoteContent($remoteHTMLContentArray) {
+        // Requests are run in parallel. This function call is not itself asynchronous
+        $fetcher = new RemoteHTMLContentRequester(self::toUrlArray($remoteHTMLContentArray));
+        return $fetcher->fetchSynchronously();
+    }
+
+    private static function toUrlArray($remoteHTMLContentArray) {
+        $urls = array();
+        foreach($remoteHTMLContentArray as $remoteHTMLContent) {
+            $urls[] = $remoteHTMLContent->getURL();
+        }
+        return $urls;
     }
 }
 ?>

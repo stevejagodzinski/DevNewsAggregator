@@ -8,17 +8,9 @@ require_once 'php/service/remotehtml/RemoteHTMLContentFetcher.php';
 require_once 'php/view/remotehtml/HTMLResponseBuilder.php';
 
 class ErrorReportingRemoteHTMLContentBuilder {
-
     public static function getRemoteHTMLContent() {
-        $allStories = array();
-
-        foreach(RemoteHtmlContentDataAccess::getAll() as $remoteHTMLContent) {
-            $fetchedStories = RemoteHTMLContentFetcher::getInstance()->fetch($remoteHTMLContent);
-            $allStories = array_merge($allStories, $fetchedStories);
-        }
-
+        $allStories = RemoteHTMLContentFetcher::getInstance()->scrape(RemoteHtmlContentDataAccess::getAll());
         uasort($allStories, "NewsEntryComparator::compare");
-
         return self::toHtml($allStories);
     }
 
