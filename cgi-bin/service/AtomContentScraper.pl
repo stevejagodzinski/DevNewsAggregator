@@ -32,10 +32,6 @@ sub scrape_crape_remote_atom_definitions {
 			);
 			
 			push( @news_entries,  $newsEntry);
-			
-		    print "News Entry Title: " . $newsEntry->title . "\n";
-		    print "News Entry Date: " . $newsEntry->date . "\n";
-		    print "News Entry Source: " . $newsEntry->source. "\n\n";
 		}
 	}
 

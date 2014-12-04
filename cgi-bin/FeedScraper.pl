@@ -25,4 +25,12 @@ if ($name) {
 
 my @news_entries = scrape_crape_remote_atom_definitions(\@content_definitions);
 
-print to_json(\@news_entries);
+foreach my $newsEntry (@news_entries) {
+	print "News Entry Title2: " . $newsEntry->title . "\n";
+    print "News Entry Date2: " . $newsEntry->date . "\n";
+    print "News Entry Source2: " . $newsEntry->source. "\n\n";
+}
+
+# TODO: Print JSON, or HTML Format
+#print JSON->new->allow_blessed->utf8->encode($news_entries[0]);
+#print $json->encode(\@news_entries,{allow_blessed=>1,convert_blessed=>1});
