@@ -1,6 +1,9 @@
 # PhpStorm (Idea) Config
 /.idea/**
 
+# eclipse config
+.project
+
 # Development Sandbox
 sandbox.php
 
