@@ -1,3 +1,5 @@
+package HttpContentFetcher;
+
 use XML::Feed;
 require LWP::Parallel::UserAgent;
 require HTTP::Request;
@@ -9,7 +11,7 @@ use warnings;
 #  no utf8;
 
 sub fetch_atoms {
-	my @urls = @{$_[0]};
+	my @urls = @{$_[1]};
 	
 	my $pua = LWP::Parallel::UserAgent->new();
 	$pua->duplicates(0);    # ignore duplicates

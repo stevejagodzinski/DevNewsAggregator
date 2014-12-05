@@ -1,6 +1,8 @@
-require '.\service\HttpContentFetcher.pl';
-require '.\model\AtomContentDefinition.pl';
-require '.\model\NewsEntry.pl';
+package AtomContentScraper;
+
+require Service::HttpContentFetcher;
+require Model::AtomContentDefinition;
+require Model::NewsEntry;
 
 require XML::Feed;
 
@@ -8,7 +10,7 @@ use strict;
 use warnings;
 
 sub scrape_crape_remote_atom_definitions {
-	my @remote_atom_definitions = @{$_[0]};
+	my @remote_atom_definitions = @{$_[1]};
 
 	my @urls = ();
 	foreach my $atom_content_definition (@remote_atom_definitions) {
@@ -16,7 +18,7 @@ sub scrape_crape_remote_atom_definitions {
 		push( @urls, $atom_content_definition->url );
 	}
 
-	my @content = fetch_atoms( \@urls );
+	my @content = HttpContentFetcher->fetch_atoms( \@urls );
 
 	my @news_entries;
 

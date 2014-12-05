@@ -1,3 +1,5 @@
+package AtomContentDefinition;
+
 use Class::Struct;
 
 use strict;

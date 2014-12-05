@@ -4,8 +4,8 @@ use strict;
 use warnings;
 
 use JSON;
-require 'data_access\RssContentDefinitionDataAccess.pl';
-require 'service\AtomContentScraper.pl';
+require DataAccess::RssContentDefinitionDataAccess;
+require Service::AtomContentScraper;
 
 use CGI;
 
@@ -16,14 +16,14 @@ my $name = $cgi->param( "name" );
 
 my @content_definitions;
 if ($name) {
-	@content_definitions = get_atom_content_definitions_by_name($name);
+	@content_definitions = RssContentDefinitionDataAccess->get_atom_content_definitions_by_name($name);
 } elsif ($userId) {
-	@content_definitions = get_atom_content_definitions_for_user($userId);
+	@content_definitions = RssContentDefinitionDataAccess->get_atom_content_definitions_for_user($userId);
 } else {
-	@content_definitions = get_all_atom_content_definitions();
+	@content_definitions = RssContentDefinitionDataAccess->get_all_atom_content_definitions();
 }
 
-my @news_entries = scrape_crape_remote_atom_definitions(\@content_definitions);
+my @news_entries = AtomContentScraper->scrape_crape_remote_atom_definitions(\@content_definitions);
 
 foreach my $newsEntry (@news_entries) {
 	print "News Entry Title2: " . $newsEntry->title . "\n";
@@ -32,5 +32,4 @@ foreach my $newsEntry (@news_entries) {
 }
 
 # TODO: Print JSON, or HTML Format
-#print JSON->new->allow_blessed->utf8->encode($news_entries[0]);
-#print $json->encode(\@news_entries,{allow_blessed=>1,convert_blessed=>1});
+print JSON->new->convert_blessed->utf8->encode($news_entries[0]);
