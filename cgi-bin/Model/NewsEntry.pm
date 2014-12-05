@@ -1,6 +1,7 @@
 package NewsEntry;
 
 use Class::Struct;
+use JSON;
 
 use strict;
 use warnings;
@@ -12,18 +13,18 @@ struct NewsEntry => [
 	source  => '$',
 ];
 
-# TODO:
-#sub TO_JSON {
-#	my $self = shift;
-#
-#	return JSON->new->utf8->encode(
-#		{
-#			'title'   => $self->title,
-#			'date'    => $self->date,
-#			'content' => $self->content,
-#			'source'  => $self->source,
-#		}
-#	);
-#}
+
+sub TO_JSON {
+	my $self = shift;
+
+	my %data = (
+		'title'   => $self->title,
+		'date'    => $self->date,
+		'content' => $self->content->body,
+		'source'  => $self->source,
+	);
+
+	return to_json \%data;
+}
 
 1;
