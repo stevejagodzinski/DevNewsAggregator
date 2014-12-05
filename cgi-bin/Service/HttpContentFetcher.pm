@@ -4,6 +4,8 @@ use XML::Feed;
 require LWP::Parallel::UserAgent;
 require HTTP::Request;
 
+use JSON;
+
 use strict;
 use warnings;
 
@@ -31,7 +33,7 @@ sub fetch_atoms {
 		my $res = $entries->{$key}->response;
 	
 		if($res->code == "200") {
-			push(@content, $res->content);
+			push(@content, $res->decoded_content);
 		}
 	}
 	
