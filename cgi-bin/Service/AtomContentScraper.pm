@@ -46,12 +46,14 @@ sub scrape_crape_remote_atom_definitions {
 				title	=>$entry->title,
 				date	=>get_date($entry),
 				source	=>$url_names{$url},
-				link		=>$entry->link
+				link	=>$entry->link
 			);
 			
 			push( @news_entries,  $newsEntry);
 		}
 	}
+
+	@news_entries = sort { $b->date - $a->date } @news_entries;
 
 	return @news_entries;
 }
