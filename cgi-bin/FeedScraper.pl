@@ -14,7 +14,7 @@ my $cgi = CGI->new();
 
 print $cgi->header();
 
-my $userId = $cgi->param( "userId" );
+my $userId = $cgi->param( "userid" );
 my $name = $cgi->param( "name" );
 
 my @content_definitions;

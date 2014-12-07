@@ -2,10 +2,12 @@
 
 require_once 'php/model/remotehtml/RemoteHTMLContent.php';
 require_once 'php/model/remotehtml/dateparsing/DateFieldInformationFactory.php';
+require_once 'php/model/remotehtml/scrapingstrategy/HTMLScrapingStrategy.php';
 
 class RemoteHtmlContentDataAccess {
+
     public static function getAll() {
-        return self::getForQueryString('SELECT * FROM "DevNewsAggregatorConfiguration_htmlcontent" WHERE enabled = true');
+        return self::getForQueryString('SELECT * FROM "DevNewsAggregatorConfiguration_htmlcontent" WHERE enabled = true AND scraping_strategy <> ' . HTMLScrapingStrategy::ATOM_FEED);
     }
 
     public static function getForUser($userId) {
@@ -14,7 +16,8 @@ class RemoteHtmlContentDataAccess {
                     ' INNER JOIN "DevNewsAggregatorConfiguration_htmlcontent_users" htmlcontent_users ' .
                     ' ON html_content.id = htmlcontent_users.htmlcontent_id ' .
                     ' WHERE html_content.enabled = true ' .
-                    " AND htmlcontent_users.user_id = $1 ";
+                    " AND htmlcontent_users.user_id = $1 " .
+                    ' AND scraping_strategy <> ' . HTMLScrapingStrategy::ATOM_FEED;
 
         return self::getForQueryString($query, array($userId));
     }
