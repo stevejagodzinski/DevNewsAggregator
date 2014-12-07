@@ -34,7 +34,8 @@ sub scrape_crape_remote_atom_definitions {
 				content	=>$entry->content,				
 				title	=>$entry->title,
 				date	=>str2time($entry->updated),
-				source	=>$url_names{$url}
+				source	=>$url_names{$url},
+				link		=>$entry->link
 			);
 			
 			push( @news_entries,  $newsEntry);

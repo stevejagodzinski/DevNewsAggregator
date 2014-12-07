@@ -18,12 +18,15 @@ sub print_response() {
 		my $content = $news_entry->content->body;
 		my $display_date = strftime("%B %o, %Y %I:%M %p", @localTime);
 		my $iso_date = strftime('%Y-%m-%dT%H:%M:%SZ', @localTime);
+		my $link = $news_entry->link;
 		my $source = $news_entry->source;
 		my $title = $news_entry->title;
 		
 		print "<div class=\"news-entry\" data-content-source=\"$source\">";
 		print "<div class=\"news-entry-header\">";
-		print "<span class=\"news-entry-title\">$title</span>";
+		print "<span class=\"news-entry-title\">";
+		print "<a href=\"$link\">$title</a>";
+		print "</span>";
 		print "<span class=\"news-entry-date\" data-iso-date=\"$iso_date\">$display_date</span>";
 		print "</div>";
 		print "<div class=\"news-entry-content\">$content</div>";

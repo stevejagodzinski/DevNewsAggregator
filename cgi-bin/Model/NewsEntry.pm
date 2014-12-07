@@ -11,6 +11,7 @@ struct NewsEntry => [
 	date    => '$',
 	content => '$',
 	source  => '$',
+	link	=> '$',
 ];
 
 
@@ -22,6 +23,7 @@ sub TO_JSON {
 		'date'    => $self->date,
 		'content' => $self->content->body,
 		'source'  => $self->source,
+		'link'    => $self->link,
 	);
 
 	return to_json \%data;
