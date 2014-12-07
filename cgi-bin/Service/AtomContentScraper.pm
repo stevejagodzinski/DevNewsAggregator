@@ -45,7 +45,6 @@ sub scrape_crape_remote_atom_definitions {
 				content	=>$entry->content,				
 				title	=>$entry->title,
 				date	=>get_date($entry),
-#				date	=>str2time($entry->updated),
 				source	=>$url_names{$url},
 				link		=>$entry->link
 			);
