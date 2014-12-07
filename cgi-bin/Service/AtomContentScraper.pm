@@ -11,6 +11,17 @@ use Date::Parse;
 use strict;
 use warnings;
 
+sub get_date {
+	my $entry = shift;
+	
+	my $date_time = $entry->modified;
+	if (!defined $date_time) {
+		$date_time = $entry->issued;
+	}
+	
+	return $date_time->epoch();
+}
+
 sub scrape_crape_remote_atom_definitions {
 	my @remote_atom_definitions = @{$_[1]};
 
@@ -27,13 +38,14 @@ sub scrape_crape_remote_atom_definitions {
 
 	foreach my $url (keys %$url_content) {
 		my $content = $url_content->{$url};
-		my $feed = XML::Feed->parse( \$content , 'Atom');
+		my $feed = XML::Feed->parse(\$content);
 		foreach my $entry ( $feed->entries ) {
 			
 			my $newsEntry = NewsEntry->new(
 				content	=>$entry->content,				
 				title	=>$entry->title,
-				date	=>str2time($entry->updated),
+				date	=>get_date($entry),
+#				date	=>str2time($entry->updated),
 				source	=>$url_names{$url},
 				link		=>$entry->link
 			);
