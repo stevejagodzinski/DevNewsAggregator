@@ -10,6 +10,29 @@ require View::ResponseBuilder;
 
 use CGI;
 
+=head1 DESCRIPTION
+
+Queries PostgreSQL form atom content definitions based on http request parameters.
+Retrieves the content from the defined Atom/Rss feed(s).
+Feed entries are aggregated and sorted by date.
+Then, transformed and printed in the expected html format.
+
+=over 12
+
+When the name parameter is provided. Only the feed with that name is processed.
+Ex: http://localhost/cgi-bin/FeedScraper.pl?name=Example
+
+When the userid parameter is provided. All feeds which are subscribed to by
+that user are processed.
+Ex: http://localhost/cgi-bin/FeedScraper.pl?userid=123
+
+When no request parapeters are defined. All enabled feeds are processed.
+Ex: http://localhost/cgi-bin/FeedScraper.pl
+
+=back
+
+=cut
+
 my $cgi = CGI->new();
 
 print $cgi->header();

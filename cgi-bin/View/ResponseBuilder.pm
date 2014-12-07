@@ -7,6 +7,28 @@ use warnings;
 
 binmode STDOUT, ":utf8";
 
+=head1 DESCRIPTION
+
+Prints an array of news entries in HTML format
+
+=head2 Methods
+
+=over 12
+
+=item C<print_response(\@news_entries)>
+
+Given an array of news entries, print each in html format.
+The set will be printed inside of a containing <div class="content">
+
+Input:  \@news_entries - Reference to an array containing the news entries.
+		Array elements shal be instance of Model::NewsEntry.
+
+Output: No return value. However, html is printed to standard out in utf8.
+
+=back
+
+=cut
+
 sub print_response() {
 	my @news_entries = @{ $_[1] };
 	

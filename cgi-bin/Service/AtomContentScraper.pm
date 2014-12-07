@@ -11,6 +11,35 @@ use Date::Parse;
 use strict;
 use warnings;
 
+=head1 DESCRIPTION
+
+Scrapes each Atom/Rss feed and builds an array of Model::NewsEntry objects
+sorted by date.
+
+=head2 Methods
+
+=over 12
+
+=item C<scrape_crape_remote_atom_definitions(\@remote_atom_definitions)>
+
+Given an array of Model::AtomContentDefinition objects, retrieves the RSS/Atom
+content, and builds an array of Model::NewsEntry objects from the entries in 
+each feed, aggregated into one single array, and sorted by date.
+
+Input:  \@remote_atom_definitions - Reference to an array containing 
+									Model::AtomContentDefinition defining feeds
+									to scrape
+
+Output: Array of Model::NewsEntry objects constructed from entries in atom/rss
+		feeds. Array will be sorted by date.
+
+=back
+
+=cut
+
+# usage: get_date($entry)
+# input: $entry - XML::Feed::Entry
+# output: The UTC epoch value for the modified or creation time of the entry
 sub get_date {
 	my $entry = shift;
 	

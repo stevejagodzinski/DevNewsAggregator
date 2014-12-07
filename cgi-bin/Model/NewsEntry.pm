@@ -6,6 +6,12 @@ use JSON;
 use strict;
 use warnings;
 
+=head1 DESCRIPTION
+
+Models an individual entry scraped 
+
+=cut
+
 struct NewsEntry => [
 	title   => '$',
 	date    => '$',
@@ -13,6 +19,7 @@ struct NewsEntry => [
 	source  => '$',
 	link	=> '$',
 ];
+
 
 
 sub TO_JSON {
