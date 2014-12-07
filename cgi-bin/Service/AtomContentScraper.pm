@@ -14,17 +14,19 @@ use warnings;
 sub scrape_crape_remote_atom_definitions {
 	my @remote_atom_definitions = @{$_[1]};
 
-	my @urls = ();
+	my %url_names = ();
 	foreach my $atom_content_definition (@remote_atom_definitions) {
 		bless $atom_content_definition, "AtomContentDefinition";
-		push( @urls, $atom_content_definition->url );
+		$url_names{$atom_content_definition->url}=$atom_content_definition->name;
 	}
 
-	my @content = HttpContentFetcher->fetch_atoms( \@urls );
+	my @urls = keys %url_names;
+	my $url_content = HttpContentFetcher->fetch_atoms( \@urls );
 
 	my @news_entries;
 
-	foreach my $content (@content) {
+	foreach my $url (keys %$url_content) {
+		my $content = $url_content->{$url};
 		my $feed = XML::Feed->parse( \$content , 'Atom');
 		foreach my $entry ( $feed->entries ) {
 			
@@ -32,7 +34,7 @@ sub scrape_crape_remote_atom_definitions {
 				content	=>$entry->content,				
 				title	=>$entry->title,
 				date	=>str2time($entry->updated),
-				source	=>"TODO: Set Source" # TODO
+				source	=>$url_names{$url}
 			);
 			
 			push( @news_entries,  $newsEntry);

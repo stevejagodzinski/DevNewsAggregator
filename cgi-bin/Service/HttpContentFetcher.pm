@@ -22,7 +22,7 @@ sub fetch_atoms {
 		$pua->register($httpRequest);
 	}
 	
-	my @content = ();
+	my %content = ();
 	
 	my $entries = $pua->wait();
 	
@@ -30,9 +30,9 @@ sub fetch_atoms {
 		my $res = $entries->{$key}->response;
 	
 		if($res->code == "200") {
-			push(@content, $res->decoded_content);
+			$content{$res->request->url} = $res->decoded_content;
 		}
 	}
 	
-	return @content;
+	return \%content;
 }
