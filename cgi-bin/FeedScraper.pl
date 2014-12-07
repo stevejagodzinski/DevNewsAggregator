@@ -6,10 +6,13 @@ use warnings;
 use JSON;
 require DataAccess::RssContentDefinitionDataAccess;
 require Service::AtomContentScraper;
+require View::ResponseBuilder;
 
 use CGI;
 
 my $cgi = CGI->new();
+
+print $cgi->header();
 
 my $userId = $cgi->param( "userId" );
 my $name = $cgi->param( "name" );
@@ -25,4 +28,4 @@ if ($name) {
 
 my @news_entries = AtomContentScraper->scrape_crape_remote_atom_definitions(\@content_definitions);
 
-print JSON->new->pretty->convert_blessed->utf8->encode(\@news_entries);
+ResponseBuilder->print_response(\@news_entries);

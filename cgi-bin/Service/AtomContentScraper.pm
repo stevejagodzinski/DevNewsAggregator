@@ -6,6 +6,8 @@ require Model::NewsEntry;
 
 require XML::Feed;
 
+use Date::Parse;
+
 use strict;
 use warnings;
 
@@ -29,7 +31,7 @@ sub scrape_crape_remote_atom_definitions {
 			my $newsEntry = NewsEntry->new(
 				content	=>$entry->content,				
 				title	=>$entry->title,
-				date	=>$entry->updated,
+				date	=>str2time($entry->updated),
 				source	=>"TODO: Set Source" # TODO
 			);
 			
